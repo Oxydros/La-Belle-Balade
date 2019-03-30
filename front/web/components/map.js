@@ -9,6 +9,7 @@ var MapFactory = ReactMapboxGl.Map;
 var Layer = ReactMapboxGl.Layer;
 var Feature = ReactMapboxGl.Feature;
 var Source = ReactMapboxGl.Source
+var Marker = ReactMapboxGl.Marker
 
 
 module.exports = createReactClass({
@@ -16,23 +17,14 @@ module.exports = createReactClass({
       return {}
     },
     render() {
-        const Map = MapFactory({
-            accessToken: "pk.eyJ1IjoibGFmaXVzIiwiYSI6ImNqdHZpZnl2YTFybTAzeWxsbjJvNjY5eW4ifQ.wirxUDiWbhISy5PGNBHp1A",
-            interactive: true,
+      const Map = MapFactory({
+        accessToken: "pk.eyJ1IjoibGFmaXVzIiwiYSI6ImNqdHZpZnl2YTFybTAzeWxsbjJvNjY5eW4ifQ.wirxUDiWbhISy5PGNBHp1A",
+        interactive: true
+      });
 
-          });
+      var remoteData = this.props.remoteData || {}
 
-        var data = {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            properties: {},
-            geometry: this.props.geometry
-          }
-        }
-
-        console.log(data)
-
+      if (!remoteData.coord) {
         return <Map
         center={[2.333333, 48.866667]}
         zoom={[12]}
@@ -40,13 +32,59 @@ module.exports = createReactClass({
         containerStyle={{
           height: "100VH",
           width: "100%"
-        }}>
+        }}/>
+      }
+
+      var data = {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: remoteData.geometry
+        }
+      }
+
+      var sw = {
+        lon: remoteData.map_size[0],
+        lat: remoteData.map_size[1]
+      }
+
+      var no = {
+        lon: remoteData.map_size[2],
+        lat: remoteData.map_size[3]
+      }
+
+      return <Map
+      center={[2.333333, 48.866667]}
+      zoom={[12]}
+      style="mapbox://styles/mapbox/streets-v9"
+      containerStyle={{
+        height: "100VH",
+        width: "100%"
+      }}
+      fitBounds={[[sw.lon, sw.lat], [no.lon, no.lat]]}>{}
         <Source id="source_id" geoJsonSource={data}/>
         <Layer
           type="line"
           sourceId="source_id"
         >
         </Layer>
+        {
+          remoteData && remoteData.coord.map((data) => {
+           var name = data[0];
+           var lon = data[1];
+           var lat = data[2];
+            return <Layer
+            type="symbol"
+            layout={{
+              "icon-image": "town-hall-15",
+              "icon-size": 2
+              }}>
+            <Feature
+              coordinates={[lon, lat]}/>
+          </Layer>
+          })
+        }
       </Map>;
     }
 })

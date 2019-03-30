@@ -31,19 +31,18 @@ const Home = createReactClass({
       API.query_map(value["interest"],
         value["lat"], value["long"], value["start"], value["end"]).then((data) => {
           this.setState({
-            geojson: data
+            remoteData: data
           })
         })
     },
     render(){
-
       var props = {
         ...this.props,
         callback: (value) => {
           this.setState({modal: false})
           this.launchResearch(value);
         },
-        geometry: this.state.geojson
+        remoteData: this.state.remoteData
       }
 
       var modal_content = <ResearchModal {...props} />

@@ -45,6 +45,7 @@ def index():
     lon_fin = request.args.get("lon_fin")
 
     coord = retrievePI(float(lat_deb), float(lon_deb), float(lat_fin), float(lon_fin))
+    print(coord)
     ROUTE_URL = "https://api.mapbox.com/directions/v5/mapbox/walking/{0}.json?access_token={1}&overview=full&geometries=geojson"
     lat_longs = ";".join(["{0},{1}".format(value[0], value[1]) for key, value in coord.items()])
 
@@ -54,7 +55,17 @@ def index():
     result = result.json()
 
     geometry = result["routes"][0]["geometry"]
-    return jsonify(geometry)
+
+    coord_list = []
+    for key in coord:
+        coord_list.append([key, coord[key][0], coord[key][1]])
+
+    data = {
+        "geometry": geometry,
+        "coord": coord_list,
+        "map_size": [float(lon_deb), float(lat_deb), float(lon_fin), float(lat_fin)]
+    }
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
