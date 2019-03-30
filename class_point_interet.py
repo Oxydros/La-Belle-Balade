@@ -6,18 +6,18 @@ import numpy as np
 
 
 class PointOfInterest:
-    def __init__(self, place_class, visiting_time, coord, rating, n_rating, classes):
+    def __init__(self, place_class, coord, rating, n_rating, classes, visiting_time=0.5):
         self.place_class = place_class #the classe of the point of interest
         self.coord = coord #the coordinates of the point of interest
-        self.visiting_time = visiting_time #the duration of the visit
-        self.rating = self.get_rating(rating,n_rating) 
+        self.visiting_time = visiting_time #the duration of the visit, in hour
+        self.rating = self.get_rating(rating,n_rating)  #the rating of the point of interest, in [0,1]
         self.features = self.features(classes)
     
     def get_rating(self, rating, n_rating):
         if n_rating<1000:
             return 0.1
         else:
-            return rating
+            return np.max(rating,0.1)
     
     def dist(self, point):
         x = (point[0]-self.coord[0])*np.cos((point[1]+self.coord[1])/2)
