@@ -14,65 +14,8 @@ var API = require("./utils/api")
 /* required css for our application */
 require('./webflow/css/style.css');
 
-const ResearchModal = createReactClass({
-  getInitialState(){
-    return {}
-  },
-  getHourArray() {
-    var arr = [], i, j;
-    for(i=0; i<24; i++) {
-      for(j=0; j<4; j++) {
-        arr.push(i + ":" + (j===0 ? "00" : 15*j) );
-      }
-    }
-    return arr;
-  },
-  render(){
-    return <JSXZ in="index" sel=".research-modal">
-      <Z sel=".research-header"><ChildrenZ/></Z>
-      <Z sel=".research-interests .select-interests" multiple={true} onChange={(e) => {
-        var selectedValues = Array.from(e.target)
-        .map(option => option.value)
-        this.setState({interest: selectedValues})
-      }}><ChildrenZ/></Z>
-      <Z sel=".research-hours .start-hour" onChange={(e) => {
-        this.setState({start: e.target.value})
-      }}>
-      {
-        this.getHourArray().map((hour) => {
-          return <option value={hour}>{hour}</option>
-        })
-      }
-      </Z>
-      <Z sel=".research-hours .end-hour" onChange={(e) => {
-        this.setState({end: e.target.value})
-      }}>
-            {
-        this.getHourArray().map((hour) => {
-          return <option value={hour}>{hour}</option>
-        })
-      }
-      </Z>
-      <Z sel=".research-pos .lat-input" onChange={(e) => {
-        this.setState({lat: e.target.value})
-      }}><ChildrenZ/></Z>
-      <Z sel=".research-pos .long-input" onChange={(e) => {
-        this.setState({long: e.target.value})
-      }}><ChildrenZ/></Z>
-
-      <Z sel=".research-submit .ok-button" onClick={(e) => {
-        e.preventDefault()
-
-        this.props.callback(this.state);
-      }}><ChildrenZ/></Z>
-
-      <Z sel=".research-submit .ko-button" onClick={(e) => {
-        e.preventDefault()
-        this.props.callback(false);
-      }}><ChildrenZ/></Z>
-    </JSXZ>
-  }
-})
+var ResearchModal = require("./components/research_modal")
+var Map = require("./components/map")
 
 const Home = createReactClass({
     getInitialState() {
@@ -102,9 +45,11 @@ const Home = createReactClass({
 
       var hidden_modal = this.state.modal ? "hidden" : "";
 
+      var map = <Map {...props} />
+
       return <JSXZ in="index" sel=".layout">
-        <Z sel=".center">
-          <ChildrenZ/>
+        <Z sel=".center .map">
+          {map}
         </Z>
         <Z sel=".right-col .interest-infos-header">
           <ChildrenZ/>
