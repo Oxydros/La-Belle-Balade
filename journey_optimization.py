@@ -1,7 +1,7 @@
 #%%
 import networkx as nx
 import numpy as np
-
+import held_karp
 
 class Journey():
     def __init__(self,user,ratio_visit_travel=0.6):
@@ -14,9 +14,8 @@ class Journey():
         
     def get_distance_matrix(self,):
         
-    def get_travel_distance(self,):
-        net = nx.Graph(self.distance_matrix)
-        networkx.astar_path(net,source=net.):
+    def get_travel_distance(self):
+        opt, path = 
     
     
     def initialize_journey(self):
