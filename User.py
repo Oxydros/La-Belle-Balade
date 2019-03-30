@@ -59,7 +59,8 @@ class User:
             score[ind] = np.dot(self.profile, point_of_interest.features)
             # Ponderate by the distance
             score[ind] *= self.distance_regularization(point_of_interest.dist(self.mid_point))
-        return score[:self.keep_point_interests]
+            best_pi = np.argsort(score)
+        return best_pi[:self.keep_point_interests]
     
     
     
