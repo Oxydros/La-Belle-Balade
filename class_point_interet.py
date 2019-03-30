@@ -6,10 +6,11 @@ import numpy as np
 
 
 class PointOfInterest:
-    def __init__(self, place_class, coord, rating, n_rating, classes):
-        self.place_class = place_class
-        self.coord = coord
-        self.rating = self.get_rating(rating,n_rating)
+    def __init__(self, place_class, visiting_time, coord, rating, n_rating, classes):
+        self.place_class = place_class #the classe of the point of interest
+        self.coord = coord #the coordinates of the point of interest
+        self.visiting_time = visiting_time #the duration of the visit
+        self.rating = self.get_rating(rating,n_rating) 
         self.features = self.features(classes)
     
     def get_rating(self, rating, n_rating):
