@@ -1,3 +1,4 @@
+#%%
 import numpy as np
 
 
@@ -23,7 +24,7 @@ class PointOfInterest:
         return np.sqrt(x**2 + y**2)*6.371
     
     def features(self, classes):
-        features = np.full(len(classes),0.3*rating)
-        features[np.where(classes==self.place_class)] = rating
+        features = np.full(len(classes),0.3*self.rating)
+        features[np.where(classes==self.place_class)] = self.rating
         return features
     
