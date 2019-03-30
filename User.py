@@ -47,14 +47,14 @@ class User:
         if self.dist_mid_depar > point_of_interest_dist:
             return 1
         else:
-            return np.exp(-(point_of_interest_dist - self.dist_mid_arr))
+            return np.exp(-(point_of_interest_dist - self.dist_mid_depar))
         
-    def find_relevant_interest_points(self, points_of_interests):
+    def find_relevant_interest_points(self, points_of_interest):
         """
         Return the importance of each point of interest for the user
         """
-        score = np.zeros(len(points_of_interests))
-        for ind, point_of_interest in enumerate(points_of_interests):
+        score = np.zeros(len(points_of_interest))
+        for ind, point_of_interest in enumerate(points_of_interest):
             # Order by the profile
             score[ind] = np.dot(self.profile, point_of_interest.features)
             # Ponderate by the distance
