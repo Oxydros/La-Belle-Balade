@@ -76,8 +76,9 @@ def index():
     arg_interest = u.find_relevant_interest_points(points_of_interest)
     keep_points_interest = [points_of_interest[elem] for elem in arg_interest]
     j = journey_optimization.Journey(u,keep_points_interest)
-    interests, journey_time, travel_time, opt_path = j.get_optimal_journey()
+    interests, journey_time, travel_time, opt_path, schedule = j.get_optimal_journey()
 
+    print(schedule)
     #Remove first and last
     opt_path = opt_path[1:-1]
 
