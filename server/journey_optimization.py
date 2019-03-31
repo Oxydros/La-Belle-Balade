@@ -1,6 +1,4 @@
 #%%
-import os
-os.chdir('C:/ML-Tools/ACE-1.2.15/FacebookHack2019')
 
 import networkx as nx
 import numpy as np
@@ -18,7 +16,7 @@ class Journey():
         self.keep_points_interest = keep_points_interest #the points of interest which have been kept
         self.journey =  self.initialize_journey() #the journey and 
         self.distance_matrix = self.get_distance_matrix() #the matrix containing the distances between each point
-        print(self.distance_matrix)
+        # print(self.distance_matrix)
         self.journey_time = self.get_journey_time() #the duration of the journey
 
         
@@ -27,7 +25,7 @@ class Journey():
         distance_matrix = np.zeros((n,n))"""
         locations = [elem.coord for elem in self.keep_points_interest]
         locations = [self.user.depar_loc] + locations + [self.user.arr_loc]
-        print(locations)
+        # print(locations)
         MAPBOX_ACCESS_KEY = 'pk.eyJ1IjoibGFmaXVzIiwiYSI6ImNqdHZpZnl2YTFybTAzeWxsbjJvNjY5eW4ifQ.wirxUDiWbhISy5PGNBHp1A'
         ROUTE_URL = "https://api.mapbox.com/directions-matrix/v1/mapbox/walking/{0}?access_token={1}"
         lat_longs = ";".join(["{0},{1}".format(elem[0], elem[1]) for elem in locations])
