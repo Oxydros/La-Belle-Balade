@@ -41,7 +41,7 @@ class Journey():
         index += [len(self.distance_matrix)-1]
         dist_mat = self.distance_matrix[index]
         opt, path = held_karp.held_karp(dist_mat)
-        path[-1] = len(self.keep_points_interest)+1
+        path[-1] = len(self.journey)+1
         self.optimal_path = path #returns the optimal path, useful for the visualization on the map
         return opt
     
@@ -78,7 +78,15 @@ class Journey():
         while(self.journey_time<self.user.time_available and len(self.journey)<=len(self.keep_points_interest)-1):
             self.journey += [self.keep_points_interest[len(self.journey)]]
             self.journey_time = self.get_journey_time()
+            
+    def get_schedule(self):
+        schedule = np.zeros((len(self.journey_time)+1,2))
+        for i in range(len(self.journey)):
+            schedule[i+1,0] =  schedule[i,1] + self.distance_matrix[self.optimal_path[i],self.optimal_path[i+1]]
+            schedule[i+1,1] = schedule[i+1,0] + self.journey[self.optimal_path[i+1]].visiting_time
+        return schedule[1:,:]
     
     def get_optimal_journey(self):
         self.optimize_journey()
-        return self.journey, self.journey_time, self.travel_distance, self.optimal_path
+        self.schedule = self.get_schedule()
+        return self.journey, self.journey_time, self.travel_distance, self.optimal_path, self.schedule
