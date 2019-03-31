@@ -41,7 +41,7 @@ class Journey():
         index += [len(self.distance_matrix)-1]
         dist_mat = self.distance_matrix[index]
         opt, path = held_karp.held_karp(dist_mat)
-        path[-1] = len(self.keep_points_interest)+1
+        path[-1] = len(self.journey)+1
         self.optimal_path = path #returns the optimal path, useful for the visualization on the map
         return opt
     
