@@ -17,7 +17,7 @@ require('./webflow/css/style.css');
 var ResearchModal = require("./components/research_modal")
 var Map = require("./components/map")
 
-const Home = createReactClass({
+const Infos = createReactClass({
     getInitialState() {
       return {
         modal: false,
@@ -28,16 +28,11 @@ const Home = createReactClass({
         return;
 
       API.query_map({...data, long: document.getElementById("long").value, lat: document.getElementById("lat").value}).then((data) => {
-          this.setState({
-            remoteData: data
-          })
+          this.props.updateData(data)
+          // this.setState({
+          //   remoteData: data
+          // })
         })
-    },
-    changeLatLong(long, lat){
-      this.setState({
-        long: long,
-        lat: lat
-      })
     },
     render(){
       var props = {
@@ -46,37 +41,31 @@ const Home = createReactClass({
           this.setState({modal: false})
           this.launchResearch(value);
         },
-        remoteData: this.state.remoteData
       }
 
       var modal_content = <ResearchModal {...props} />
 
-      var hidden_modal = this.state.modal ? "" : "hidden";
+      var hidden_modal = this.state.modal ? "" : " hidden";
 
-      var map = <Map {...props} />
-
-      return <JSXZ in="index" sel=".layout">
-        <Z sel=".center .map">
-          {map}
-        </Z>
-        <Z sel=".right-col .interest-infos-header">
+      return <JSXZ in="index" sel=".right-col">
+        <Z sel=".interest-infos-header">
           <ChildrenZ/>
         </Z>
-        <Z sel=".right-col .infos-list">
+        <Z sel=".infos-list">
           <ChildrenZ/>
         </Z>
 
-        <Z sel=".right-col .research-infos .research-button" onClick={(e) => {
+        <Z sel=".research-infos .research-button" onClick={(e) => {
             this.setState({modal: true})
         }}>
           <ChildrenZ/>
         </Z>
 
-        <Z sel=".right-col .research-infos .lat-input" id="lat">
+        <Z sel=".research-infos .lat-input" id="lat">
           <ChildrenZ/>
         </Z>
 
-        <Z sel=".right-col .research-infos .long-input" id="long">
+        <Z sel=".research-infos .long-input" id="long">
           <ChildrenZ/>
         </Z>        
 
@@ -84,6 +73,33 @@ const Home = createReactClass({
           {modal_content}
         </Z>
       </JSXZ>
+    }
+  })
+
+  const Home = createReactClass({
+    getInitialState(){
+      return {
+        data: {}
+      }
+    },
+    updateData(data){
+      this.setState({
+        data: data
+      })
+    },
+    render(){
+      var props = {
+        ...this.props,
+        updateData: this.updateData,
+        data: this.state.data
+      }
+
+      return <JSXZ in="index" sel=".layout">
+          <Z sel=".layout-container">
+            {<Map {...props}/>}
+            {<Infos {...props} />}
+          </Z>
+        </JSXZ>
     }
   })
 

@@ -109,7 +109,8 @@ def index():
     data = {
         "geometry": geometry,
         "coord": coord_list,
-        "map_size": [float(lon_deb), float(lat_deb), float(lon_fin), float(lat_fin)]
+        "map_size": [float(lon_deb), float(lat_deb), float(lon_fin), float(lat_fin)],
+        "schedule": schedule.tolist()
     }
     return jsonify(data)
 

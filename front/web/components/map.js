@@ -35,7 +35,9 @@ module.exports = createReactClass({
         interactive: true
       });
 
-      var remoteData = this.props.remoteData || {}
+      var remoteData = this.props.data || {}
+
+      console.log(remoteData)
 
       if (!remoteData.coord) {
         return <Map
