@@ -20,6 +20,8 @@ MAPBOX_ACCESS_KEY = 'pk.eyJ1IjoibGFmaXVzIiwiYSI6ImNqdHZpZnl2YTFybTAzeWxsbjJvNjY5
 
 def retrievePI(lat_deb, lon_deb, lat_fin, lon_fin):
     box = "("+str(min(lat_deb, lat_fin))+","+str(min(lon_deb, lon_fin))+","+str(max(lat_deb, lat_fin))+","+str(max(lon_deb, lon_fin))+")"
+
+    print("Box %s"%(box))
     overpass_url = "http://overpass-api.de/api/interpreter"
     overpass_query = """
     [out:json];
@@ -46,15 +48,21 @@ def retrievePI(lat_deb, lon_deb, lat_fin, lon_fin):
 @app.route('/',methods=['GET','POST', 'OPTIONS'])
 def index():
 
-    classes = ["musée","parc"]
+    classes = ["museum","parc", "religion", "art", "market"]
 
+    #Fetch position points
     lat_deb = float(request.args.get("lat_deb"))
     lon_deb = float(request.args.get("lon_deb"))
     lat_fin = float(request.args.get("lat_fin"))
     lon_fin = float(request.args.get("lon_fin"))
 
+    interest_values = [float(request.args.get(classes_name)) for classes_name in classes]
 
-    u = User.User(np.array([0.1,0.2]),(lon_deb, lat_deb), (lon_fin, lat_fin),2000000,keep_point_interests=10)
+    time = float(request.args.get("free_time"))
+
+    print("User interests %s  free time %f"%(interest_values, time))
+
+    u = User.User(np.array(interest_values),(lon_deb, lat_deb), (lon_fin, lat_fin), time,keep_point_interests=10)
 
     coord = retrievePI(float(lat_deb), float(lon_deb), float(lat_fin), float(lon_fin))
 
@@ -62,7 +70,7 @@ def index():
 
     for key in coord:
         lon, lat = coord[key][0], coord[key][1]
-        point = class_point_interest.PointOfInterest("musée", (lon,lat), 1.0, 1001, classes)
+        point = class_point_interest.PointOfInterest("museum", (lon,lat), 1.0, 1001, classes)
         points_of_interest.append(point)
     
     arg_interest = u.find_relevant_interest_points(points_of_interest)
@@ -70,9 +78,8 @@ def index():
     j = journey_optimization.Journey(u,keep_points_interest)
     interests, journey_time, travel_time, opt_path = j.get_optimal_journey()
 
-    print(opt_path)
+    #Remove first and last
     opt_path = opt_path[1:-1]
-    print(opt_path)
 
     coord = {}
 

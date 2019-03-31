@@ -23,17 +23,21 @@ const Home = createReactClass({
         modal: false,
       }
     },
-    launchResearch(value){
-      if (!value)
+    launchResearch(data){
+      if (!data)
         return;
-      console.log("reseach data");
-      console.log(value);
-      API.query_map(value["interest"],
-        value["lat"], value["long"], value["start"], value["end"]).then((data) => {
+
+      API.query_map({...data, long: document.getElementById("long").value, lat: document.getElementById("lat").value}).then((data) => {
           this.setState({
             remoteData: data
           })
         })
+    },
+    changeLatLong(long, lat){
+      this.setState({
+        long: long,
+        lat: lat
+      })
     },
     render(){
       var props = {
@@ -47,7 +51,7 @@ const Home = createReactClass({
 
       var modal_content = <ResearchModal {...props} />
 
-      var hidden_modal = this.state.modal ? "hidden" : "";
+      var hidden_modal = this.state.modal ? "" : "hidden";
 
       var map = <Map {...props} />
 
@@ -61,11 +65,21 @@ const Home = createReactClass({
         <Z sel=".right-col .infos-list">
           <ChildrenZ/>
         </Z>
+
         <Z sel=".right-col .research-infos .research-button" onClick={(e) => {
             this.setState({modal: true})
         }}>
           <ChildrenZ/>
         </Z>
+
+        <Z sel=".right-col .research-infos .lat-input" id="lat">
+          <ChildrenZ/>
+        </Z>
+
+        <Z sel=".right-col .research-infos .long-input" id="long">
+          <ChildrenZ/>
+        </Z>        
+
         <Z sel=".modal-wrapper" className={classNameZ + hidden_modal}>
           {modal_content}
         </Z>
