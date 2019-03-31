@@ -1,4 +1,4 @@
-/* Generated on: Sun Mar 31 2019 02:18:52 GMT+0000 (UTC) */
+/* Generated on: Sun Mar 31 2019 02:49:46 GMT+0000 (UTC) */
 /* ==========================================================================
    normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css 
    ========================================================================== */
@@ -119,14 +119,22 @@
   margin-bottom: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   border-bottom: 1px dashed #000;
   text-align: center;
 }
@@ -528,4 +536,8 @@
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+}
+
+.info-number {
+  margin-right: 40px;
 }

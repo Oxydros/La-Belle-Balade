@@ -74,6 +74,7 @@ const Infos = createReactClass({
               var timeStringArrival = arrival.toISOString().substr(11, 8);
 
               return <JSXZ in="index" sel=".infos-box" key={"schedule"+i}>
+                <Z sel=".info-number">{i+1}</Z>
                 <Z sel=".int-name">{this.props.data.coord[i + 1][0]}</Z>
                 <Z sel=".int-type">TODO TYPE</Z>
                 <Z sel=".int-arrival-time">Arrival time: {schedule[0].toHHMMSS()}</Z>
