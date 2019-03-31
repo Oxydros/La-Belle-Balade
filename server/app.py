@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
+## -*- coding: utf-8 -*-
+
 import requests
 import json
+import codecs
 import flask
 from geojson import Point, Feature
 from flask import request, url_for, render_template, redirect, jsonify
@@ -21,6 +24,9 @@ MAPBOX_ACCESS_KEY = 'pk.eyJ1IjoibGFmaXVzIiwiYSI6ImNqdHZpZnl2YTFybTAzeWxsbjJvNjY5
 
 def retrievePI(lat_deb, lon_deb, lat_fin, lon_fin):
     coord = {}
+    # if(abs(lat_fin-lat_deb) < 0.1 or abs(lon_fin-lon_deb) < 0.1):
+    #    box = "("+str(min(lat_deb, lat_fin)-0.1)+","+str(min(lon_deb, lon_fin)-0.1)+","+str(max(lat_deb, lat_fin)+0.1)+","+str(max(lon_deb, lon_fin)+0.1)+")"
+    # else:
     box = "("+str(min(lat_deb, lat_fin))+","+str(min(lon_deb, lon_fin))+","+str(max(lat_deb, lat_fin))+","+str(max(lon_deb, lon_fin))+")"
 
     overpass_url = "http://overpass-api.de/api/interpreter"
@@ -85,27 +91,27 @@ def retrievePI(lat_deb, lon_deb, lat_fin, lon_fin):
             lat = data2["elements"][i].get("lat")
             lon = data2["elements"][i].get("lon")
             if(lat != None or lon != None):
-                coord[name] = (lon, lat, "workship")
+                coord[name] = (lon, lat, "place_of_worship")
     for i in range(len(data3["elements"])):
         name = data3["elements"][i]["tags"].get("name")
         if(name != None):
             lat = data3["elements"][i].get("lat")
             lon = data3["elements"][i].get("lon")
             if(lat != None or lon != None):
-                coord[name] = (lon, lat, "market")
+                coord[name] = (lon, lat, "marketplace")
     for i in range(len(data4["elements"])):
         name = data4["elements"][i]["tags"].get("name")
         if(name != None):
             lat = data4["elements"][i].get("lat")
             lon = data4["elements"][i].get("lon")
             if(lat != None or lon != None):
-                coord[name] = (lon, lat, "view")
+                coord[name] = (lon, lat, "viewpoint")
     return coord
 
-@app.route('/',methods=['GET','POST', 'OPTIONS'])
+@app.route('/',methods=['GET','POST'])
 def index():
 
-    classes = ["museum","parc", "religion", "art", "market"]
+    classes = ["museum","viewpoint", "place_of_worship", "marketplace"]
 
     #Fetch position points
     lat_deb = float(request.args.get("lat_deb"))
@@ -126,19 +132,18 @@ def index():
     points_of_interest = []
     
     museumR = {}
-    with open('museum.csv', 'r') as csvFile:
+
+    with open('museum.csv', 'r', encoding='ISO-8859-1') as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
             museumR[row[0]] = float(row[1])
 
-    csvFile.close()
-
     for key in coord:
         lon, lat = coord[key][0], coord[key][1]
         if(key in museumR):
-            point = class_point_interest.PointOfInterest(coord[key][2], (lon,lat), museumR[key], 1001, classes)
+            point = class_point_interest.PointOfInterest(coord[key][2], (lon,lat), museumR[key], 1001, classes, name=key)
         else:
-            point = class_point_interest.PointOfInterest(coord[key][2], (lon,lat), 0.3, 1001, classes)
+            point = class_point_interest.PointOfInterest(coord[key][2], (lon,lat), 0.3, 1001, classes, name=key)
         points_of_interest.append(point)
     
     arg_interest = u.find_relevant_interest_points(points_of_interest)
@@ -152,12 +157,14 @@ def index():
 
     coord = {}
 
-    coord["begin"] = (lon_deb, lat_deb)
+    places = []
+    coord["begin"] = (lon_deb, lat_deb, "Home")
     for i in opt_path:
         point = interests[i - 1]
-        coord["randomName" + str(i)] = point.coord
+        coord[point.name] = point.coord
+        places.append(point.place_class)
 
-    coord["end"] = (lon_fin, lat_fin)
+    coord["end"] = (lon_fin, lat_fin, "End")
     print(coord)
 
     ROUTE_URL = "https://api.mapbox.com/directions/v5/mapbox/walking/{0}.json?access_token={1}&overview=full&geometries=geojson"
@@ -178,7 +185,8 @@ def index():
         "geometry": geometry,
         "coord": coord_list,
         "map_size": [float(lon_deb), float(lat_deb), float(lon_fin), float(lat_fin)],
-        "schedule": schedule.tolist()
+        "schedule": schedule.tolist(),
+        "places": places
     }
     return jsonify(data)
 

@@ -1,4 +1,4 @@
-/* Generated on: Sun Mar 31 2019 03:30:29 GMT+0000 (UTC) */
+/* Generated on: Sun Mar 31 2019 04:43:11 GMT+0000 (UTC) */
 /* ==========================================================================
    normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css 
    ========================================================================== */
@@ -124,10 +124,9 @@
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
@@ -296,6 +295,9 @@
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
 }
 
 .modal-wrapper {
@@ -389,7 +391,7 @@
   border-bottom: 1px dotted #000;
 }
 
-.hours-input {
+.research-hours {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -404,8 +406,35 @@
   align-items: center;
 }
 
+.hours-input {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 70%;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
 .start-hour {
-  width: 25%;
+  width: 60%;
 }
 
 .research-submit {
@@ -423,10 +452,10 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-box-align: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
@@ -459,7 +488,12 @@
 }
 
 .interest-name {
+  width: 50%;
   margin-right: 20px;
+}
+
+.interest-value {
+  width: 75%;
 }
 
 .field-label {
@@ -479,19 +513,24 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  width: 60%;
   margin-top: 2px;
   margin-right: 40px;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
   -webkit-box-align: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
 }
 
-.interest-parc {
+.interest-viewpoint {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  width: 60%;
   margin-top: 2px;
   margin-right: 40px;
   -webkit-box-align: center;
@@ -518,6 +557,7 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  width: 60%;
   margin-top: 2px;
   margin-right: 40px;
   -webkit-box-align: center;
@@ -531,6 +571,7 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  width: 60%;
   margin-top: 2px;
   margin-right: 40px;
   -webkit-box-align: center;
@@ -610,4 +651,26 @@
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+}
+
+.label-time {
+  width: 50%;
+}
+
+.hours-input-a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 60%;
+  margin-top: 2px;
+  margin-right: 40px;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.time-value {
+  width: 75%;
 }

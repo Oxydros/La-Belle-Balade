@@ -80,16 +80,13 @@ const Infos = createReactClass({
         <Z sel=".infos-list">
           {
             schedule.map((schedule, i) => {
-              var arrival = new Date(null);
-              arrival.setSeconds(schedule[0]); // specify value for SECONDS here
-              var timeStringArrival = arrival.toISOString().substr(11, 8);
-
+              var visit = schedule[1] - schedule[0]
               return <JSXZ in="index" sel=".infos-box" key={"schedule"+i}>
                 <Z sel=".info-number">{i+1}</Z>
                 <Z sel=".int-name">{this.props.data.coord[i + 1][0]}</Z>
-                <Z sel=".int-type">TODO TYPE</Z>
+                <Z sel=".int-type">{this.props.data.places[i]}</Z>
                 <Z sel=".int-arrival-time">Arrival time: {schedule[0].toHHMMSS()}</Z>
-                <Z sel=".int-visit-time">Visit time: {schedule[1].toHHMMSS()}</Z>
+                <Z sel=".int-visit-time">Visit time: {visit.toHHMMSS()}</Z>
               </JSXZ>
             })
           }

@@ -15,7 +15,6 @@ var Marker = ReactMapboxGl.Marker
 module.exports = createReactClass({
     getInitialState(){
       return {
-        points: []
       }
     },
     _onClickMap(map, evt) {
@@ -88,39 +87,45 @@ module.exports = createReactClass({
           sourceId="source_id"
         >
         </Layer>
-        <Layer
+          {/* <Layer
           type="symbol"
           layout={{
             "icon-image": "town-hall-15",
             "icon-size": 2
             }}>
-            {this.state.points.map((point, i) => <Feature key={i} coordinates={point} />)}
-          </Layer>
-
-          <Layer
-          type="symbol"
-          layout={{
-            "icon-image": "town-hall-15",
-            "icon-size": 2
-            }}>
-            {remoteData.coord.map((point, i) => <Feature key={i} coordinates={[point[1], point[2]]}>TEST></Feature>)}
-          </Layer>
-        {/* {
-          remoteData && remoteData.coord.map((data) => {
+            {remoteData.coord.map((point, i) => <Feature key={i} coordinates={[point[1], point[2]]}/>)}
+          </Layer> */}
+        {
+          remoteData && remoteData.coord.map((data, i) => {
            var name = data[0];
            var lon = data[1];
            var lat = data[2];
+           var iconMap = {
+             museum: "museum-15",
+             place_of_worship: "religious-christian-15",
+             marketplace: "grocery-15",
+             viewpoint: "attraction-15"
+           }
+           console.log(i)
+           var icon;
+           if (i == 0){
+             icon = "castle-15"
+           } else if (i == remoteData.coord.length - 1){
+             icon = "embassy-15"
+           } else {
+             icon = iconMap[remoteData.places[i - 1]]
+           }
             return <Layer
             type="symbol"
             layout={{
-              "icon-image": "town-hall-15",
+              "icon-image": icon,
               "icon-size": 2
               }}>
             <Feature
               coordinates={[lon, lat]}/>
           </Layer>
           })
-        } */}
+        }
       </Map>;
     }
 })

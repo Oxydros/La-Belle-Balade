@@ -14,10 +14,9 @@ module.exports = {
             lon_fin: research_settings["long"] || "0",
             free_time: time,
             museum: research_settings["museum"] || "0",
-            market: research_settings["market"] || "0",
-            parc: research_settings["parc"] || "0",
-            religion: research_settings["religion"] || "0",
-            art: research_settings["art"] || "0",
+            marketplace: research_settings["market"] || "0",
+            viewpoint: research_settings["viewpoint"] || "0",
+            place_of_worship: research_settings["religion"] || "0",
         }
         var qs = Qs.stringify(data)
         console.log(qs)

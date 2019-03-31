@@ -14,7 +14,7 @@ module.exports = createReactClass({
   getHourArray() {
     var arr = [], i, j;
     for(i=0; i<24; i++) {
-      for(j=0; j<4; j++) {
+      for(j=1; j<4; j++) {
         arr.push(i + ":" + (j===0 ? "00" : 15*j) );
       }
     }
@@ -35,12 +35,8 @@ module.exports = createReactClass({
         this.setState({museum: e.target.value})
       }}><ChildrenZ/></Z>
       
-      <Z sel=".research-interests .interest-parc .interest-value" onChange={(e) => {
-        this.setState({parc: e.target.value})
-      }}><ChildrenZ/></Z>
-
-      <Z sel=".research-interests .interest-art .interest-value" onChange={(e) => {
-        this.setState({art: e.target.value})
+      <Z sel=".research-interests .interest-viewpoint .interest-value" onChange={(e) => {
+        this.setState({viewpoint: e.target.value})
       }}><ChildrenZ/></Z>
 
       <Z sel=".research-interests .interest-market .interest-value" onChange={(e) => {
@@ -52,7 +48,7 @@ module.exports = createReactClass({
         this.setState({religion: e.target.value})
       }}><ChildrenZ/></Z>
 
-      <Z sel=".research-hours .start-hour" onChange={(e) => {
+      <Z sel=".research-hours .time-value" onChange={(e) => {
         this.setState({time: e.target.value})
       }}>
       {
@@ -71,8 +67,9 @@ module.exports = createReactClass({
       <Z sel=".research-submit .ok-button" onClick={(e) => {
         e.preventDefault()
 
+        var time = document.getElementById("time-id").value
         console.log(this.state)
-        this.props.callback(this.state);
+        this.props.callback({...this.state, time: time});
       }}><ChildrenZ/></Z>
 
       <Z sel=".research-submit .ko-button" onClick={(e) => {
