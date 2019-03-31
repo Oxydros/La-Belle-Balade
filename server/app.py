@@ -6,6 +6,7 @@ import flask
 from geojson import Point, Feature
 from flask import request, url_for, render_template, redirect, jsonify
 from flask_cors import CORS
+import csv
 
 import journey_optimization
 import class_point_interest
@@ -19,11 +20,11 @@ CORS(app)
 MAPBOX_ACCESS_KEY = 'pk.eyJ1IjoibGFmaXVzIiwiYSI6ImNqdHZpZnl2YTFybTAzeWxsbjJvNjY5eW4ifQ.wirxUDiWbhISy5PGNBHp1A'
 
 def retrievePI(lat_deb, lon_deb, lat_fin, lon_fin):
+    coord = {}
     box = "("+str(min(lat_deb, lat_fin))+","+str(min(lon_deb, lon_fin))+","+str(max(lat_deb, lat_fin))+","+str(max(lon_deb, lon_fin))+")"
 
-    print("Box %s"%(box))
     overpass_url = "http://overpass-api.de/api/interpreter"
-    overpass_query = """
+    overpass_query_museum = """
     [out:json];
     (node["tourism"="museum"]"""+box+""";
      way["tourism"="museum"]"""+box+""";
@@ -31,18 +32,74 @@ def retrievePI(lat_deb, lon_deb, lat_fin, lon_fin):
     );
     out center;
     """
-    response = requests.get(overpass_url,
-                            params={'data': overpass_query})
-    data = response.json()
+    overpass_query_workship = """
+    [out:json];
+    (node["amenity"="place_of_worship"]"""+box+""";
+     way["amenity"="place_of_worship"]"""+box+""";
+     rel["amenity"="place_of_worship"]"""+box+""";
+    );
+    out center;
+    """
+    overpass_query_market = """
+    [out:json];
+    (node["amenity"="marketplace"]"""+box+""";
+     way["amenity"="marketplace"]"""+box+""";
+     rel["amenity"="marketplace"]"""+box+""";
+    );
+    out center;
+    """
+    overpass_query_view = """
+    [out:json];
+    (node["tourism"="viewpoint"]"""+box+""";
+     way["tourism"="viewpoint"]"""+box+""";
+     rel["tourism"="viewpoint"]"""+box+""";
+    );
+    out center;
+    """
+    response_museum = requests.get(overpass_url,
+                            params={'data': overpass_query_museum})
+    data1 = response_museum.json()
+    
+    response_workship = requests.get(overpass_url,
+                            params={'data': overpass_query_workship})
+    data2 = response_workship.json()
+    
+    response_market = requests.get(overpass_url,
+                            params={'data': overpass_query_market})
+    data3 = response_market.json()
+    
+    response_view = requests.get(overpass_url,
+                            params={'data': overpass_query_view})
+    data4 = response_view.json()
 
-    coord = {}
-    for i in range(len(data["elements"])):
-        name = data["elements"][i]["tags"].get("name")
+    for i in range(len(data1["elements"])):
+        name = data1["elements"][i]["tags"].get("name")
         if(name != None):
-            lat = data["elements"][i].get("lat")
-            lon = data["elements"][i].get("lon")
+            lat = data1["elements"][i].get("lat")
+            lon = data1["elements"][i].get("lon")
             if(lat != None or lon != None):
-                coord[name] = (lon, lat)
+                coord[name] = (lon, lat, "museum")
+    for i in range(len(data2["elements"])):
+        name = data2["elements"][i]["tags"].get("name")
+        if(name != None):
+            lat = data2["elements"][i].get("lat")
+            lon = data2["elements"][i].get("lon")
+            if(lat != None or lon != None):
+                coord[name] = (lon, lat, "workship")
+    for i in range(len(data3["elements"])):
+        name = data3["elements"][i]["tags"].get("name")
+        if(name != None):
+            lat = data3["elements"][i].get("lat")
+            lon = data3["elements"][i].get("lon")
+            if(lat != None or lon != None):
+                coord[name] = (lon, lat, "market")
+    for i in range(len(data4["elements"])):
+        name = data4["elements"][i]["tags"].get("name")
+        if(name != None):
+            lat = data4["elements"][i].get("lat")
+            lon = data4["elements"][i].get("lon")
+            if(lat != None or lon != None):
+                coord[name] = (lon, lat, "view")
     return coord
 
 @app.route('/',methods=['GET','POST', 'OPTIONS'])
@@ -67,10 +124,21 @@ def index():
     coord = retrievePI(float(lat_deb), float(lon_deb), float(lat_fin), float(lon_fin))
 
     points_of_interest = []
+    
+    museumR = {}
+    with open('museum.csv', 'r') as csvFile:
+        reader = csv.reader(csvFile)
+        for row in reader:
+            museumR[row[0]] = float(row[1])
+
+    csvFile.close()
 
     for key in coord:
         lon, lat = coord[key][0], coord[key][1]
-        point = class_point_interest.PointOfInterest("museum", (lon,lat), 1.0, 1001, classes)
+        if(key in museumR):
+            point = class_point_interest.PointOfInterest(coord[key][2], (lon,lat), museumR[key], 1001, classes)
+        else:
+            point = class_point_interest.PointOfInterest(coord[key][2], (lon,lat), 0.3, 1001, classes)
         points_of_interest.append(point)
     
     arg_interest = u.find_relevant_interest_points(points_of_interest)
