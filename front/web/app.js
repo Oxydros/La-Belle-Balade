@@ -34,18 +34,27 @@ const Infos = createReactClass({
     getInitialState() {
       return {
         modal: false,
+        loader: false
       }
     },
     launchResearch(data){
       if (!data)
         return;
 
-      API.query_map({...data, long: document.getElementById("long").value, lat: document.getElementById("lat").value}).then((data) => {
+      this.loader(API.query_map({...data, long: document.getElementById("long").value, lat: document.getElementById("lat").value}).then((data) => {
           this.props.updateData(data)
           // this.setState({
           //   remoteData: data
           // })
-        })
+        }))
+    },
+    loader(promise){
+      this.setState({
+        loader: true
+      })
+      promise.then(() => {
+        this.setState({loader: false})
+      })
     },
     render(){
       var props = {
@@ -54,11 +63,13 @@ const Infos = createReactClass({
           this.setState({modal: false})
           this.launchResearch(value);
         },
+        loader: this.loader
       }
 
       var modal_content = <ResearchModal {...props} />
 
       var hidden_modal = this.state.modal ? "" : " hidden";
+      var hidden_loader = this.state.loader ? "" : " hidden";
 
       var schedule = this.props.data && this.props.data.schedule || []
 
@@ -100,6 +111,11 @@ const Infos = createReactClass({
 
         <Z sel=".modal-wrapper" className={classNameZ + hidden_modal}>
           {modal_content}
+        </Z>
+
+
+        <Z sel=".loader-wrapper" className={classNameZ + hidden_loader}>
+          <ChildrenZ/>
         </Z>
       </JSXZ>
     }
