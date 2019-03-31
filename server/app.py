@@ -54,7 +54,7 @@ def index():
     lon_fin = float(request.args.get("lon_fin"))
 
 
-    u = User.User(np.array([0.1,0.2]),(lon_deb, lat_deb), (lon_fin, lat_fin),2000000,keep_point_interests=10)
+    u = User.User(np.array([0.1,0.2]),(lon_deb, lat_deb), (lon_fin, lat_fin),20000,keep_point_interests=10)
 
     coord = retrievePI(float(lat_deb), float(lon_deb), float(lat_fin), float(lon_fin))
 
@@ -68,6 +68,7 @@ def index():
     arg_interest = u.find_relevant_interest_points(points_of_interest)
     keep_points_interest = [points_of_interest[elem] for elem in arg_interest]
     j = journey_optimization.Journey(u,keep_points_interest)
+    print(j.distance_matrix)
     interests, journey_time, travel_time, opt_path = j.get_optimal_journey()
 
     print(opt_path)

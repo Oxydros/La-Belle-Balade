@@ -2,8 +2,9 @@
 import numpy as np
 
 class PointOfInterest:
-    def __init__(self, place_class, coord, rating, n_rating, classes, visiting_time=1800):
+    def __init__(self, place_class, coord, rating, n_rating, classes, name="None", visiting_time=1800):
         self.place_class = place_class #the classe of the point of interest
+        self.name = name #the name of the place
         self.coord = coord #the coordinates of the point of interest
         self.visiting_time = visiting_time #the duration of the visit, in seconds
         self.rating = self.get_rating(rating,n_rating)  #the rating of the point of interest, in [0,1]
