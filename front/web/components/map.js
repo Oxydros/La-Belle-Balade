@@ -103,7 +103,7 @@ module.exports = createReactClass({
             "icon-image": "town-hall-15",
             "icon-size": 2
             }}>
-            {remoteData.coord.map((point, i) => <Feature key={i} coordinates={[point[1], point[2]]} />)}
+            {remoteData.coord.map((point, i) => <Feature key={i} coordinates={[point[1], point[2]]}>TEST></Feature>)}
           </Layer>
         {/* {
           remoteData && remoteData.coord.map((data) => {
