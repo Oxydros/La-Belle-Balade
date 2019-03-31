@@ -11,6 +11,19 @@ var createReactClass = require('create-react-class')
 
 var API = require("./utils/api")
 
+Number.prototype.toHHMMSS = function () {
+  var seconds = Math.floor(this),
+      hours = Math.floor(seconds / 3600);
+  seconds -= hours*3600;
+  var minutes = Math.floor(seconds / 60);
+  seconds -= minutes*60;
+
+  if (hours   < 10) {hours   = "0"+hours;}
+  if (minutes < 10) {minutes = "0"+minutes;}
+  if (seconds < 10) {seconds = "0"+seconds;}
+  return hours+':'+minutes+':'+seconds;
+}
+
 /* required css for our application */
 require('./webflow/css/style.css');
 
@@ -47,12 +60,27 @@ const Infos = createReactClass({
 
       var hidden_modal = this.state.modal ? "" : " hidden";
 
+      var schedule = this.props.data && this.props.data.schedule || []
+
       return <JSXZ in="index" sel=".right-col">
         <Z sel=".interest-infos-header">
           <ChildrenZ/>
         </Z>
         <Z sel=".infos-list">
-          <ChildrenZ/>
+          {
+            schedule.map((schedule, i) => {
+              var arrival = new Date(null);
+              arrival.setSeconds(schedule[0]); // specify value for SECONDS here
+              var timeStringArrival = arrival.toISOString().substr(11, 8);
+
+              return <JSXZ in="index" sel=".infos-box" key={"schedule"+i}>
+                <Z sel=".int-name">{this.props.data.coord[i + 1][0]}</Z>
+                <Z sel=".int-type">TODO TYPE</Z>
+                <Z sel=".int-arrival-time">Arrival time: {schedule[0].toHHMMSS()}</Z>
+                <Z sel=".int-visit-time">Visit time: {schedule[1].toHHMMSS()}</Z>
+              </JSXZ>
+            })
+          }
         </Z>
 
         <Z sel=".research-infos .research-button" onClick={(e) => {
