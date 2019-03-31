@@ -82,8 +82,8 @@ class Journey():
     def get_schedule(self):
         schedule = np.zeros((len(self.journey_time)+1,2))
         for i in range(len(self.journey)):
-            schedule[i+1,0] =  schedule[i,1] + self.distance_matrix[optimal_path[i],optimal_path[i+1]]
-            schedule[i+1,1] = schedule[i+1,0] + self.journey[optimal_path[i+1]].visiting_time
+            schedule[i+1,0] =  schedule[i,1] + self.distance_matrix[self.optimal_path[i],self.optimal_path[i+1]]
+            schedule[i+1,1] = schedule[i+1,0] + self.journey[self.optimal_path[i+1]].visiting_time
         return schedule[1:,:]
     
     def get_optimal_journey(self):
