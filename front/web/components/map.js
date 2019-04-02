@@ -30,7 +30,7 @@ module.exports = createReactClass({
     },
     render() {
       const Map = MapFactory({
-        accessToken: "pk.eyJ1IjoibGFmaXVzIiwiYSI6ImNqdHZpZnl2YTFybTAzeWxsbjJvNjY5eW4ifQ.wirxUDiWbhISy5PGNBHp1A",
+        accessToken: "INSERT_YOUR_OWN_MAPBOX_TOKEN",
         interactive: true
       });
 
