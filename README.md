@@ -26,7 +26,9 @@ You have to start **two** flask server, one to serve the front, the other to run
 The front listen on the port **8080**, the back on **5000**
 
 ```bash
-# Launch the front
+# Compile our front using webpack
+cd ./front/web && npm install && node ./node_modules/webpack/bin/webpack.js && cd ../..
+# Launch it
 ./front/server/app.py
 
 # Launch the back
