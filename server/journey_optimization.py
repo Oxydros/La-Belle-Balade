@@ -1,13 +1,9 @@
-#%%
-
 import networkx as nx
 import numpy as np
 import held_karp
 
 import requests
 import json
-
-
 
 class Journey():
     def __init__(self,user,keep_points_interest,ratio_visit_travel=0.6):

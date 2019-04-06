@@ -20,7 +20,7 @@ import numpy as np
 app = flask.Flask(__name__)
 CORS(app)
 
-MAPBOX_ACCESS_KEY = 'pk.eyJ1IjoibGFmaXVzIiwiYSI6ImNqdHZpZnl2YTFybTAzeWxsbjJvNjY5eW4ifQ.wirxUDiWbhISy5PGNBHp1A'
+MAPBOX_ACCESS_KEY = '**MAPBOX ACCESS TOKEN**'
 
 def retrievePI(lat_deb, lon_deb, lat_fin, lon_fin):
     coord = {}

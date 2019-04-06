@@ -8,6 +8,7 @@ module.exports = {
         var time = (+a[0]) * 60 * 60 + (+a[1]) * 60 
 
         var data = {
+            //Default start coordinate is Facebook Paris HQ
             lat_deb: 48.8695156,
             lon_deb: 2.3381157,
             lat_fin: research_settings["lat"] || "0",

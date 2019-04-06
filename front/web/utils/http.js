@@ -7,7 +7,6 @@ var HTTP = new (function(){
   this.put = (url,data)=>this.req('PUT',url,data)
 
   this.req = (method,url,data)=> new Promise((resolve, reject) => {
-    console.log("New request ", method, " ", url, " ", data)
     var req = new XMLHttpRequest()
     req.open(method, url)
     req.responseType = "text"

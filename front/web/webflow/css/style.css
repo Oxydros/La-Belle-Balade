@@ -1,4 +1,4 @@
-/* Generated on: Sun Mar 31 2019 04:43:11 GMT+0000 (UTC) */
+/* Generated on: Sun Mar 31 2019 07:40:11 GMT+0000 (UTC) */
 /* ==========================================================================
    normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css 
    ========================================================================== */
@@ -82,6 +82,7 @@
 }
 
 .heading {
+  background-color: #fff;
   text-align: center;
 }
 
@@ -124,9 +125,10 @@
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: distribute;
-  justify-content: space-around;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
@@ -578,6 +580,10 @@
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+}
+
+.infos-text {
+  margin-right: 20px;
 }
 
 .info-number {

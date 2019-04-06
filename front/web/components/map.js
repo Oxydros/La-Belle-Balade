@@ -18,19 +18,12 @@ module.exports = createReactClass({
       }
     },
     _onClickMap(map, evt) {
-      // console.log(evt.lngLat);
       document.getElementById("lat").value = evt.lngLat.lat
       document.getElementById("long").value = evt.lngLat.lng
-
-      // this.setState({
-      //   points:[[evt.lngLat.lng, evt.lngLat.lat]]
-      // })
-
-      // this.props.changeLatLong(evt.lngLat.lng, evt.lngLat.lat)
     },
     render() {
       const Map = MapFactory({
-        accessToken: "pk.eyJ1IjoibGFmaXVzIiwiYSI6ImNqdHZpZnl2YTFybTAzeWxsbjJvNjY5eW4ifQ.wirxUDiWbhISy5PGNBHp1A",
+        accessToken: "**MAPBOX ACCESS TOKEN*",
         interactive: true
       });
 
@@ -87,17 +80,8 @@ module.exports = createReactClass({
           sourceId="source_id"
         >
         </Layer>
-          {/* <Layer
-          type="symbol"
-          layout={{
-            "icon-image": "town-hall-15",
-            "icon-size": 2
-            }}>
-            {remoteData.coord.map((point, i) => <Feature key={i} coordinates={[point[1], point[2]]}/>)}
-          </Layer> */}
         {
           remoteData && remoteData.coord.map((data, i) => {
-           var name = data[0];
            var lon = data[1];
            var lat = data[2];
            var iconMap = {
